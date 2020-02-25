@@ -1,0 +1,39 @@
+.navbarClass {
+    background-color: #1cae82
+}
+
+.headerImg {
+    position: absolute;
+    width: 30px;
+    left: 30%;
+    top: 9%;
+}
+
+.am-tab-bar { /*使导航始终在底部*/
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: inherit;
+}
+
+.sticky-header { /*使标题始终在顶部*/
+    z-index: 10;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+
+/* 消 息 文 本 居 右 */
+#chat-page .chat-me .am-list-extra {
+    flex-basis: auto; /* 宽 度 包 裹 内 容 */
+}
+
+#chat-page .chat-me .am-list-content {
+    padding-right: 15px;
+    text-align: right;
+}
+.biaoqing{
+    margin-right: 5px;
+    margin-top: 2px;
+}

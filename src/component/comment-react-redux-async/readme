@@ -1,0 +1,20 @@
+以前我们编写异步请求时，都是讲异步操作放在react中，比如：点击某一个按钮就触发某一个事件。
+现在我们通过redux来管理状态时，点击按钮的触发事件往往不会写在react中，而是通过redux去管理。
+但是redux的action中返回的是一个对象，它不支持返回函数，因此需要添加额外的插件
+1.npm install --save redux-thunk
+2.在store.js中创建store对象时，将这个thunk应用上去
+    import thunk from 'redux-thunk'
+    const store = createStore(
+      counter,
+      applyMiddleware(thunk) // 应用上异步中间件
+    )
+3.action中返回一个函数
+    export const incrementAsync = number => {
+      return dispatch => {
+        setTimeout(() => {
+          // 分发给同步action
+          dispatch(increment(number))
+        }, 1000)
+      }
+    }
+

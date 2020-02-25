@@ -1,0 +1,74 @@
+传统的redux会出现高耦合的现象，即在react中出现了redux的代码，如dispatch等，
+因此我们希望将react代码和redux代码分开，这时就需要引入react-redux。
+
+
+首先了解一些react-redux的一些知识点
+React-Redux将所有组件分成两大类
+1)	UI组件
+    a.	只负责 UI 的呈现，不带有任何业务逻辑
+    b.	通过props接收数据(一般数据和函数)
+    c.	不使用任何 Redux 的 API
+    d.	一般保存在components文件夹下
+2)	容器组件
+    a.	负责管理数据和业务逻辑，不负责UI的呈现
+    b.	使用 Redux 的 API
+    c.	一般保存在containers文件夹下
+相关API
+1)	Provider
+    让所有组件都可以得到state数据
+    <Provider store={store}>
+        <容器组件 />
+      </Provider>
+2)	connect()
+    用于包装 UI 组件生成容器组件
+    import { connect } from 'react-redux'
+      connect(
+        mapStateToprops,
+        mapDispatchToProps
+      )(UI组件)
+3)	mapStateToprops()
+    将外部的数据（即state对象）转换为UI组件的标签属性
+      const mapStateToprops = function (state) {
+       return {
+         value: state
+       }
+      }
+4)	mapDispatchToProps()
+    将分发action的函数转换为UI组件的标签属性
+    简洁语法可以直接指定为actions对象或包含多个action方法的对象
+
+
+react-redux如何使用
+（1）store.js action.js reducer.js写法一样
+（2）index.js需要修改
+以前写法直接是组件标签，现在需要通过Provider标签包裹，并且store参数在该标签中传入
+redux写法:
+    <App store={store}/>
+react-redux写法:
+    import {Provider} from 'react-redux'
+    ReactDOM.render(
+        (
+            //让所有组件都可以得到state数据和store对象
+            <Provider store={store}>
+                <容器组件 />
+            </Provider>
+        ),
+        document.getElementById('root')
+    )
+(3) 以前在index.js中store直接传给的是App,但是现在传给的是Provider，那么，组件
+    如何获取store呢？这时我们需要一个连接工具，将UI组件和容器组件连接，
+    export default connect(
+        // state为外部的state数据,即reducer中返回的状态数据
+        function (state) {
+            return {state:state}
+        },
+        {方法}
+    )(UI组件)
+（4）在UI组件中，以往调用方法是先引用action.js，然后调用store的dispatch方法，
+    现在直接通过this.props.方法调用即可，react-redux会自动为我们分发
+
+
+redux和react-redux的区别总结:
+(1)程序主入口需要用Provider包裹，且store传给该标签
+(2)react-redux需要将UI组件和容器组件相连接
+(3)redux中是在UI组件中引用action，现在是在容器组件中引用
